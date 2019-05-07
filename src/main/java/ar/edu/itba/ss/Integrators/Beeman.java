@@ -13,8 +13,8 @@ public class Beeman extends Integrator {
     }
 
     @Override
-    public void moveParticle(Particle particle, Double time, List<Particle> neighbors) {
-        Vector2D force = forceFunction.getForce(particle.getPosition(), particle.getVelocity(), neighbors);
+    public void moveParticle(Particle particle, Double time, List<Particle> neighbours) {
+        Vector2D force = forceFunction.getForce(particle.getPosition(), particle.getVelocity(), neighbours);
         Vector2D previousAcceleration;
         if (time == 0){
             previousAcceleration = new Vector2D(
@@ -32,7 +32,7 @@ public class Beeman extends Integrator {
                 .add(particle.getAcceleration().multiply(2d*dt*dt/3d))
                 .add(previousAcceleration.multiply(-dt*dt/6d));
         Vector2D predictedAcceleration = forceFunction.getForce(
-                new Vector2D(position.getX(), position.getY()), particle.getVelocity(), neighbors)
+                new Vector2D(position.getX(), position.getY()), particle.getVelocity(), neighbours)
                 .multiply(1d/particle.getMass());
         Vector2D velocity = particle.getVelocity()
                 .add(predictedAcceleration.multiply(dt/3d))

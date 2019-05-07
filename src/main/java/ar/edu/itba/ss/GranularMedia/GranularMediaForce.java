@@ -8,7 +8,7 @@ import java.util.List;
 
 public class GranularMediaForce  implements ForceFunction {
     @Override
-    public Vector2D getForce(Vector2D position, Vector2D velocity, List<Particle> neighbors) {
+    public Vector2D getForce(Vector2D position, Vector2D velocity, List<Particle> neighbours) {
         return null;
     }
 }

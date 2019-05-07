@@ -28,7 +28,7 @@ public class GearPredictor extends Integrator {
         this.correctFactor5 = (1d / 60d) * (120d / Math.pow(dt,5));
     }
     @Override
-    public void moveParticle(Particle particle, Double time, List<Particle> neighbors) {
+    public void moveParticle(Particle particle, Double time, List<Particle> neighbours) {
         GPState gpState;
         if (particle.getGPState().isPresent()){
             gpState = particle.getGPState().get();
@@ -51,7 +51,7 @@ public class GearPredictor extends Integrator {
             );
 
             //Evaluate
-            Vector2D force = forceFunction.getForce(predictedGPState.getR(), predictedGPState.getR1(), neighbors);
+            Vector2D force = forceFunction.getForce(predictedGPState.getR(), predictedGPState.getR1(), neighbours);
             Vector2D acceleration = force.multiply(1.0/particle.getMass());
             Vector2D deltaAcceleration = acceleration.add(predictedGPState.getR2().multiply(-1.0));
             Vector2D deltaR2 = deltaAcceleration.multiply(dt*dt/periodicNumbers[2]);

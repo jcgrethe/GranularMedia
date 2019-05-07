@@ -15,7 +15,7 @@ public abstract class Integrator {
         this.forceFunction = forceFunction;
     }
 
-    public abstract void moveParticle(Particle particle, Double time, List<Particle> neighbors);
+    public abstract void moveParticle(Particle particle, Double time, List<Particle> neighbours);
 
     public Double unidimensionalNextPosition(Particle particle, Double time) {
         moveParticle(particle, time, Collections.emptyList());

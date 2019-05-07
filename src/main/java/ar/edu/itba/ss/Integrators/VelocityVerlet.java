@@ -15,9 +15,9 @@ public class VelocityVerlet extends Integrator {
     }
 
     @Override
-    public void moveParticle(Particle particle, Double time, List<Particle> neighbors) {
+    public void moveParticle(Particle particle, Double time, List<Particle> neighbours) {
         if (forceFunction instanceof GranularMediaForce){
-            Vector2D force = forceFunction.getForce(new Vector2D(particle.getX(),particle.getY()), new Vector2D(particle.getvX(), particle.getvY()),neighbors);
+            Vector2D force = forceFunction.getForce(new Vector2D(particle.getX(),particle.getY()), new Vector2D(particle.getvX(), particle.getvY()),neighbours);
             Vector2D predictedPosition = particle.getPosition().multiply(2d).add(particle.getPreviousPosition().multiply(-1d)).add(force.multiply(dt*dt/particle.getMass()));
             Vector2D predictedVelocity = predictedPosition.add(particle.getPreviousPosition().multiply(-1d)).multiply(1d/(2d*dt));
 
@@ -28,13 +28,13 @@ public class VelocityVerlet extends Integrator {
             ));
 
         }else{
-            Vector2D force = forceFunction.getForce(new Vector2D(particle.getX(),particle.getY()), new Vector2D(particle.getvX(), particle.getvY()),neighbors);
+            Vector2D force = forceFunction.getForce(new Vector2D(particle.getX(),particle.getY()), new Vector2D(particle.getvX(), particle.getvY()),neighbours);
             Double x = particle.getX() + dt*particle.getvX() + dt*dt/particle.getMass()*force.getX();
             Double y = particle.getY() + dt*particle.getvY() + dt*dt/particle.getMass()*force.getY();
 
             Particle predictedParticle = new Particle(particle.getRadius(), particle.getMass(), x,y, particle.getvX(),particle.getvY());
             Vector2D predictedForce = forceFunction.getForce(new Vector2D(predictedParticle.getX(), predictedParticle.getY()),
-                    new Vector2D(predictedParticle.getvX(), predictedParticle.getvY()),neighbors);
+                    new Vector2D(predictedParticle.getvX(), predictedParticle.getvY()),neighbours);
 
             Double vX = particle.getvX() + dt*(force.getX() + predictedForce.getX())/(2*particle.getMass());
             Double vY = particle.getvY() + dt*(force.getY() + predictedForce.getY())/(2*particle.getMass());

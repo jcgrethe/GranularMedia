@@ -166,9 +166,9 @@ public class Output {
     }
 
 
-    public static double potencial(Particle p, List<Particle> neighbors, double rm, double e){
+    public static double potencial(Particle p, List<Particle> neighbours, double rm, double e){
         double acum= 0.0;
-        for(Particle n: neighbors){
+        for(Particle n: neighbours){
             double distance = p.point2D().distance(n.point2D());
             double aux = e * ( Math.pow(rm/distance,12) - 2 * Math.pow(rm/distance,6) );
             acum+= aux;
