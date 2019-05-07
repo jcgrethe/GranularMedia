@@ -152,9 +152,8 @@ public class Output {
 
     public static void printEnergy(Map<Particle,List<Particle>> particles, Input input,double time) throws IOException {
         double kineticE = 0.0, potencialE = 0.0;
-        for (Map.Entry<Particle,List<Particle>> entry : particles.entrySet()){
-            kineticE+= kinetic(entry.getKey());
-            potencialE+=potencial(entry.getKey(),entry.getValue(),input.getRm(),input.getEpsilon());
+        for (Map.Entry<Particle,List<Particle>> entry : particles.entrySet()) {
+
         }
         double error = energyError(5000, kineticE+potencialE);
         energyBufferedWriter.write(time+","+kineticE+","+potencialE+","+(kineticE+potencialE)+","+ error);
