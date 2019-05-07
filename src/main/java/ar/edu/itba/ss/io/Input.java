@@ -23,6 +23,7 @@ public class Input {
     private final double Kt = 2d*Kn;
     private final double y = 70d;
     private final double mass = 0.01;
+    private double endTime = 5.0;
 
     public Input(){
 
@@ -131,5 +132,9 @@ public class Input {
 
     public double getMass() {
         return mass;
+    }
+
+    public double getEndTime() {
+        return endTime;
     }
 }

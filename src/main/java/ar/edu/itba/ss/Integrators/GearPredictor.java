@@ -19,7 +19,7 @@ public class GearPredictor extends Integrator {
         setFactors();
     }
 
-    public void setFactors(){
+    private void setFactors(){
         this.correctFactor0 = 3d / 20d;
         this.correctFactor1 = (251d / 360d) / dt;
         this.correctFactor2 = 1d * (2d / Math.pow(dt,2));
