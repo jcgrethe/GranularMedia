@@ -24,7 +24,14 @@ public class State {
     private double aY;
     private double aAngle;
     private double aModule;
+
+    /**
+     * Optional State for Gear Predictor
+     */
     private Optional<GPState> gpState;
+
+    private double pressure;    //TODO: Add to constructors where need to
+
 
     public State(double x, double y, double vX, double vY) {
         this.x = x;
@@ -140,5 +147,13 @@ public class State {
 
     public void setY(double y) {
         this.y = y;
+    }
+
+    public Optional<GPState> getGpState() {
+        return gpState;
+    }
+
+    public double getPressure() {
+        return pressure;
     }
 }

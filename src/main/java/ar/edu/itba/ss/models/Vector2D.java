@@ -22,9 +22,15 @@ public class Vector2D {
     public Vector2D add(Double magnitude){
         return new Vector2D(this.x + magnitude, this.y + magnitude);
     }
+    public Vector2D subtract(Double magnitude){
+        return new Vector2D(this.x - magnitude, this.y - magnitude);
+    }
 
     public Vector2D multiply(Double magnitude){
         return new Vector2D(this.x * magnitude, this.y * magnitude);
+    }
+    public Vector2D divide(Double magnitude){
+        return new Vector2D(this.x / magnitude, this.y / magnitude);
     }
 
     public Double getX() {
@@ -37,5 +43,8 @@ public class Vector2D {
 
     public Vector2D add(Vector2D vector2D){
         return new Vector2D(this.x + vector2D.x, this.y + vector2D.y);
+    }
+    public Vector2D subtract(Vector2D vector2D){
+        return new Vector2D(this.x - vector2D.x, this.y - vector2D.y);
     }
 }
