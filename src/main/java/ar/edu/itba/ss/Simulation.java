@@ -1,10 +1,6 @@
 package ar.edu.itba.ss;
 
-/**
- * Hello world!
- *
- */
-public class App 
+public class Simulation
 {
     public static void main( String[] args )
     {
