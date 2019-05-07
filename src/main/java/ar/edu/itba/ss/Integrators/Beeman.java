@@ -1,12 +1,13 @@
 package ar.edu.itba.ss.Integrators;
 
+import ar.edu.itba.ss.Simulation;
 import ar.edu.itba.ss.models.*;
 
 import java.util.List;
 
 public class Beeman extends Integrator {
-    public Beeman(Double dt, ForceFunction forceFunction) {
-        super(dt, forceFunction);
+    public Beeman(Double dt, ForceFunction forceFunction, Double W, Double L) {
+        super(dt, forceFunction, W, L);
     }
 
     @Override
@@ -34,7 +35,8 @@ public class Beeman extends Integrator {
                 particle.getvX(), particle.getvY());
 
 
-        //TODO: NEED TO RECALCULATE WALLS???????????!!
+        //TODO: CHECK IF REALLY NEED TO RECALCULATE WALLS!?
+        walls = Simulation.getWallsCollisions(predictedPositionParticle, W, L);
 
 
         Vector2D predictedAcceleration = forceFunction.getForce(predictedPositionParticle, neighbours, walls)

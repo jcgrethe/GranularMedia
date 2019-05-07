@@ -5,9 +5,11 @@ import ar.edu.itba.ss.Integrators.GearPredictor;
 import ar.edu.itba.ss.Integrators.Integrator;
 import ar.edu.itba.ss.Integrators.NeighborDetection;
 import ar.edu.itba.ss.io.Input;
+import ar.edu.itba.ss.io.Output;
 import ar.edu.itba.ss.models.Particle;
 import ar.edu.itba.ss.models.Wall;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -26,29 +28,48 @@ public class Simulation
         // Can use other integrator.
         Map<Particle, List<Particle>> neighbours = new HashMap<>();
         List<Particle> particles = input.getParticles();
+        Output.generateXYZFile();
 
         //Simulation
         for (double time = 0d ; time < input.getEndTime() ; time += simulationDT){
 //            integrator.moveParticle();
+            neighbours = NeighborDetection.getNeighbours(
+                    input.getGrid(), input.getUsedCells(),
+                    0d, false
+            );
             for (Particle particle : particles){
-//                neighbours.put(particle, NeighborDetection.getNeighbours());  TODO Implement
-                integrator.moveParticle(particle, simulationDT,
-                        neighbours.get(particle), getWallsCollisions(particle));
+                integrator.moveParticle(
+                        particle, simulationDT,
+                        neighbours.get(particle),
+                        getWallsCollisions(particle, input.getW(), input.getL())
+                );
             }
             for (Particle particle : particles){
                 particle.updateState();
             }
-
             if (time % printDT == 0){
                 //Print
+                try {
+                    Output.printToFile(particles);
+                }catch (IOException e){
+                    System.out.println(e.getMessage());
+                }
             }
         }
 
         // Output
-
-
     }
-    private static List<Wall> getWallsCollisions(Particle p){
-        return Collections.emptyList(); //TODO Implement
+
+    public static List<Wall> getWallsCollisions(Particle p, Double boxWidth, Double boxHeight){
+        List<Wall> walls = Collections.emptyList();
+        if (p.getX() - p.getRadius() < 0)
+            walls.add(new Wall(Wall.typeOfWall.LEFT));
+        if (p.getX() + p.getRadius() < boxWidth)
+            walls.add(new Wall(Wall.typeOfWall.RIGHT));
+        if (p.getY() - p.getRadius() < 0)
+            walls.add(new Wall(Wall.typeOfWall.TOP));
+        if (p.getY() + p.getRadius() < boxHeight)
+            walls.add(new Wall(Wall.typeOfWall.BOTTOM));
+        return walls;
     }
 }

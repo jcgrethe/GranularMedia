@@ -8,12 +8,14 @@ import java.util.Collections;
 import java.util.List;
 
 public abstract class Integrator {
-    Double dt;
+    Double dt, W, L;
     ForceFunction forceFunction;
 
-    public Integrator(Double dt, ForceFunction forceFunction) {
+    public Integrator(Double dt, ForceFunction forceFunction, Double W, Double L) {
         this.dt = dt;
         this.forceFunction = forceFunction;
+        this.W = W;
+        this.L = L;
     }
 
     public abstract void moveParticle(Particle particle, Double time, List<Particle> neighbours, List<Wall> walls);

@@ -1,5 +1,7 @@
 package ar.edu.itba.ss.io;
+import ar.edu.itba.ss.models.Grid;
 import ar.edu.itba.ss.models.Particle;
+import javafx.util.Pair;
 
 import java.io.IOException;
 import java.nio.DoubleBuffer;
@@ -27,6 +29,9 @@ public class Input {
     private final double y = 70d;
     private final double mass = 0.01;
     private double endTime = 5.0;
+
+    private Grid grid;
+    private HashSet<Pair<Integer, Integer>> usedCells;
 
     public Input(){
 
@@ -151,5 +156,13 @@ public class Input {
 
     public double getD() {
         return D;
+    }
+
+    public Grid getGrid() {
+        return grid;
+    }
+
+    public HashSet<Pair<Integer, Integer>> getUsedCells() {
+        return usedCells;
     }
 }

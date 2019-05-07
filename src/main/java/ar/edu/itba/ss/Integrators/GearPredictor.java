@@ -1,5 +1,6 @@
 package ar.edu.itba.ss.Integrators;
 
+import ar.edu.itba.ss.Simulation;
 import ar.edu.itba.ss.models.*;
 
 import java.util.List;
@@ -14,8 +15,8 @@ public class GearPredictor extends Integrator {
     private Double correctFactor4;
     private Double correctFactor5;
 
-    public GearPredictor(Double dt, ForceFunction forceFunction) {
-        super(dt, forceFunction);
+    public GearPredictor(Double dt, ForceFunction forceFunction, Double W, Double L) {
+        super(dt, forceFunction, W, L);
         setFactors();
     }
 
@@ -56,7 +57,8 @@ public class GearPredictor extends Integrator {
                     predictedGPState.getR1().getX(), predictedGPState.getR1().getY()
             );
 
-            //TODO: NEED TO RECALCULATE WALLS?????!!!???
+            //TODO: CHECK IF REALLY NEED TO RECALCULATE WALLS!?
+            walls = Simulation.getWallsCollisions(predictedParticle, W, L);
 
             //Evaluate
             Vector2D force = forceFunction.getForce(predictedParticle, neighbours, walls);

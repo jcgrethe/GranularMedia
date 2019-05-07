@@ -1,14 +1,15 @@
 package ar.edu.itba.ss.Integrators;
 
 import ar.edu.itba.ss.GranularMedia.GranularMediaForce;
+import ar.edu.itba.ss.Simulation;
 import ar.edu.itba.ss.models.*;
 
 import java.util.List;
 
 public class VelocityVerlet extends Integrator {
 
-    public VelocityVerlet(Double dt, ForceFunction forceFunction) {
-        super(dt, forceFunction);
+    public VelocityVerlet(Double dt, ForceFunction forceFunction, Double W, Double L) {
+        super(dt, forceFunction, W, L);
     }
 
     @Override
@@ -31,13 +32,13 @@ public class VelocityVerlet extends Integrator {
 
             Particle predictedParticle = new Particle(particle.getRadius(), particle.getMass(), x,y, particle.getvX(),particle.getvY());
 
-            //TODO: NEED TO RECALCULATE WALLS???????!!!!!!!!!!!!!????
+            //TODO: CHECK IF REALLY NEED TO RECALCULATE WALLS!?
+            walls = Simulation.getWallsCollisions(predictedParticle, W, L);
 
             Vector2D predictedForce = forceFunction.getForce(predictedParticle, neighbours, walls);
 
             Double vX = particle.getvX() + dt*(force.getX() + predictedForce.getX())/(2*particle.getMass());
             Double vY = particle.getvY() + dt*(force.getY() + predictedForce.getY())/(2*particle.getMass());
-            // TODO CHECK WHAT IS LAST ELEMENT IN ECUATION "+ O(dt^3)" and "+ O(dt^2)"
             particle.setFutureState(new State(
                     x,y,vX,vY
             ));

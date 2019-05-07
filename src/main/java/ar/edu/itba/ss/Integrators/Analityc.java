@@ -13,8 +13,8 @@ public class Analityc extends Integrator {
     private Double K;
     private Double y;
 
-    public Analityc(Double dt, ForceFunction forceFunction, Double A, Double K, Double y) {
-        super(dt, forceFunction);
+    public Analityc(Double dt, ForceFunction forceFunction, Double A, Double K, Double y, Double W, Double L) {
+        super(dt, forceFunction, W, L);
         this.A = A;
         this.K = K;
         this.y = y;
