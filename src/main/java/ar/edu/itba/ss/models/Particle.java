@@ -165,4 +165,7 @@ public class Particle {
         currentState.setNewGPState(x,y, vx, vy);
     }
 
+    public double getDistance(Particle p){
+        return this.getPosition().distance(p.getPosition()).getModule();
+    }
 }

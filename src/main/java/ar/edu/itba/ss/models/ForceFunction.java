@@ -4,7 +4,8 @@ import ar.edu.itba.ss.models.Particle;
 import ar.edu.itba.ss.models.Vector2D;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ForceFunction {
-    public Vector2D getForce(Vector2D position, Vector2D velocity, List<Particle> neighbours);
+    public Vector2D getForce(Particle particle, List<Particle> neighbours, List<Wall> walls);
 }

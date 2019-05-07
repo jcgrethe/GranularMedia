@@ -10,7 +10,10 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Input {
     private List<Particle> particles;
     private int particlesQuantity;
-    private final double minL = 1d;   
+    private double L;
+    private double W;
+    private double D;
+    private final double minL = 1d;
     private final double maxL = 1.5;   
     private final double minW = 0.3;   
     private final double maxW = 0.4;   
@@ -136,5 +139,17 @@ public class Input {
 
     public double getEndTime() {
         return endTime;
+    }
+
+    public double getL() {
+        return L;
+    }
+
+    public double getW() {
+        return W;
+    }
+
+    public double getD() {
+        return D;
     }
 }

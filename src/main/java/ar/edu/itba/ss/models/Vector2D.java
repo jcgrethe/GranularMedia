@@ -22,6 +22,9 @@ public class Vector2D {
     public Vector2D add(Double magnitude){
         return new Vector2D(this.x + magnitude, this.y + magnitude);
     }
+    public Vector2D add(Double magnitudeX, Double magnitudeY){
+        return new Vector2D(this.x + magnitudeX, this.y + magnitudeY);
+    }
     public Vector2D subtract(Double magnitude){
         return new Vector2D(this.x - magnitude, this.y - magnitude);
     }
@@ -46,5 +49,13 @@ public class Vector2D {
     }
     public Vector2D subtract(Vector2D vector2D){
         return new Vector2D(this.x - vector2D.x, this.y - vector2D.y);
+    }
+
+    public double getModule(){
+        return Math.sqrt(Math.pow(this.x,2d) + Math.pow(this.y, 2d));
+    }
+
+    public Vector2D distance(Vector2D v){
+        return new Vector2D(Math.abs(this.x - v.getX()), Math.abs(this.y - v.getY()));
     }
 }

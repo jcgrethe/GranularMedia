@@ -1,9 +1,6 @@
 package ar.edu.itba.ss.Integrators;
 
-import ar.edu.itba.ss.models.ForceFunction;
-import ar.edu.itba.ss.models.Particle;
-import ar.edu.itba.ss.models.State;
-import ar.edu.itba.ss.models.Vector2D;
+import ar.edu.itba.ss.models.*;
 
 import java.util.List;
 
@@ -13,8 +10,8 @@ public class Beeman extends Integrator {
     }
 
     @Override
-    public void moveParticle(Particle particle, Double time, List<Particle> neighbours) {
-        Vector2D force = forceFunction.getForce(particle.getPosition(), particle.getVelocity(), neighbours);
+    public void moveParticle(Particle particle, Double time, List<Particle> neighbours, List<Wall> walls) {
+        Vector2D force = forceFunction.getForce(particle, neighbours, walls);
         Vector2D previousAcceleration;
         if (time == 0){
             previousAcceleration = new Vector2D(
@@ -31,8 +28,16 @@ public class Beeman extends Integrator {
                 .add(particle.getVelocity().multiply(dt))
                 .add(particle.getAcceleration().multiply(2d*dt*dt/3d))
                 .add(previousAcceleration.multiply(-dt*dt/6d));
-        Vector2D predictedAcceleration = forceFunction.getForce(
-                new Vector2D(position.getX(), position.getY()), particle.getVelocity(), neighbours)
+        Particle predictedPositionParticle = new Particle(
+                particle.getRadius(), particle.getMass(),
+                position.getX(), position.getY(),
+                particle.getvX(), particle.getvY());
+
+
+        //TODO: NEED TO RECALCULATE WALLS???????????!!
+
+
+        Vector2D predictedAcceleration = forceFunction.getForce(predictedPositionParticle, neighbours, walls)
                 .multiply(1d/particle.getMass());
         Vector2D velocity = particle.getVelocity()
                 .add(predictedAcceleration.multiply(dt/3d))
