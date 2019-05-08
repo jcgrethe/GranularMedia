@@ -24,7 +24,9 @@ public class Simulation
         Double simulationDT = 0.1*Math.sqrt(input.getMass()/input.getKn());   //Default ; TODO: Check if there is a better one
         Double printDT = simulationDT / 2d;
         Integrator integrator = new GearPredictor(simulationDT,
-                new GranularMediaForce(input.getKn(), input.getKt(), input.getW(), input.getL()));
+                new GranularMediaForce(input.getKn(), input.getKt(), input.getW(), input.getL()),
+                input.getW(), input.getL()
+        );
         // Can use other integrator.
         Map<Particle, List<Particle>> neighbours = new HashMap<>();
         List<Particle> particles = input.getParticles();
@@ -46,6 +48,10 @@ public class Simulation
             }
             for (Particle particle : particles){
                 particle.updateState();
+                if (particle.getY() > input.getL()){
+                    //Vertical Contorn Condition
+                    particle.setY(0d);  //TODO: Same velocity and X position?
+                }
             }
             if (time % printDT == 0){
                 //Print

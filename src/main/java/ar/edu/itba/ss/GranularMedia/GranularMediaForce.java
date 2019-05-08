@@ -1,5 +1,6 @@
 package ar.edu.itba.ss.GranularMedia;
 
+import ar.edu.itba.ss.io.Input;
 import ar.edu.itba.ss.models.ForceFunction;
 import ar.edu.itba.ss.models.Particle;
 import ar.edu.itba.ss.models.Vector2D;
@@ -52,6 +53,12 @@ public class GranularMediaForce  implements ForceFunction {
                 addForceFromWall(force, wall, forceNormalAndTan);
             }
         }
+
+        // Force from gravity
+        force.add(
+                0d,
+                -Input.getGravity() / particle.getMass()
+        );
 
         return force;
     }

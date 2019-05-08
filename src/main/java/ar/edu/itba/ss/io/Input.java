@@ -11,10 +11,11 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Input {
     private List<Particle> particles;
-    private int particlesQuantity;
+    private int particlesQuantity = Integer.MAX_VALUE;  // Will put maximum possible particles
     private double L;
     private double W;
     private double D;
+    private static final double gravity = 9.8;
     private final double minL = 1d;
     private final double maxL = 1.5;   
     private final double minW = 0.3;   
@@ -33,6 +34,9 @@ public class Input {
     private Grid grid;
     private HashSet<Pair<Integer, Integer>> usedCells;
 
+    private double totalTries = 1E6;    //TODO: Not too much?
+    private double tries = 0;
+
     public Input(){
 
     }
@@ -42,40 +46,31 @@ public class Input {
      */
     public Input(Long quantity, double dt){
         System.out.print("[Generating Input... ");
-//        this.interactionRadio = r;
-//        this.cellSideQuantity = (int) Math.ceil(boxWidth/interactionRadio);
-//        this.ParticlesQuantity = quantity;
-//        this.particles = new ArrayList<>();
-//
-//        for (int p = 0 ; p < ParticlesQuantity ; p++ ){
-//            Double x,y,vX,vY;
-//            do{
-//                x =  ThreadLocalRandom.current().nextDouble(r, boxHeight-r);
-//                y =  ThreadLocalRandom.current().nextDouble(r, boxHeight-r);
-//                double random = 2 * Math.PI * Math.random();
-//                vX = defaultVelocity*Math.cos(random);
-//                vY = defaultVelocity*Math.sin(random);
-//            }while(!noOverlapParticle(x,y));
-//            this.particles.add(new Particle(
-//                    ParticleRadio,
-//                    ParticleMass,
-//                    x,
-//                    y,
-//                    vX,
-//                    vY,
-//                    dt
-//            ));
-//        }
+        this.particles = new ArrayList<>();
+//        this.grid = new Grid(10d, L); TODO INITIALIZE GRID!!! Need to be rectangular?
+
+        //Maximum particle quantity
+        while(particles.size() < particlesQuantity && tries < totalTries) {
+            Particle potential = new Particle(
+                    Math.random()*(this.minRadio - this.maxRadio) + this.minRadio,
+                    this.mass,
+                    Math.random()*this.W, Math.random()*this.L + 1,
+                    0,0 //TODO: Initial Velocity and Acceleration?
+            );
+            if (noOverlapParticle(potential.getX(), potential.getY())){
+                particles.add(potential);
+            }else{
+                tries++;
+            }
+        }
+        grid.setParticles(particles);
         System.out.println("Done.]");
     }
 
     private boolean noOverlapParticle(Double x, Double y){
-
-        // TODO: Check if need to add the current particle radio or some minimum value
-
         if (particles.size() == 0) return true;
         for (Particle particle : particles){
-                if ( (Math.pow(particle.getX() - x, 2) + Math.pow(particle.getY() - y, 2)) <= Math.pow(particle.getRadius(), 2)){
+                if ( (Math.pow(particle.getX() - x, 2) + Math.pow(particle.getY() - y, 2)) <= Math.pow(particle.getRadius()*2, 2)){
                     return false;
             }
         }
@@ -84,46 +79,6 @@ public class Input {
 
     public List<Particle> getParticles() {
         return particles;
-    }
-
-    public int getParticlesQuantity() {
-        return particlesQuantity;
-    }
-
-    public double getMinL() {
-        return minL;
-    }
-
-    public double getMaxL() {
-        return maxL;
-    }
-
-    public double getMinW() {
-        return minW;
-    }
-
-    public double getMaxW() {
-        return maxW;
-    }
-
-    public double getMinD() {
-        return minD;
-    }
-
-    public double getMaxD() {
-        return maxD;
-    }
-
-    public boolean isContornConditions() {
-        return contornConditions;
-    }
-
-    public double getMinRadio() {
-        return minRadio;
-    }
-
-    public double getMaxRadio() {
-        return maxRadio;
     }
 
     public double getKn() {
@@ -164,5 +119,9 @@ public class Input {
 
     public HashSet<Pair<Integer, Integer>> getUsedCells() {
         return usedCells;
+    }
+
+    public static double getGravity() {
+        return gravity;
     }
 }
