@@ -92,7 +92,7 @@ public class NeighborDetection {
      * @param interactionRadio The max length of the distance from the current particle.
      * @return
      */
-    private static List<Particle> getNeighborParticles(Particle current, Cell cell, Double interactionRadio, boolean contorn, int gridSize){
+    private static List<Particle> getNeighborParticles(Particle current, Cell cell, Double interactionRadio, boolean contorn, double gridSize){
         return cell.getParticles().stream()
                 .parallel()
                 .filter(another -> (getDistance(current, another, contorn, gridSize)) <= interactionRadio)
@@ -100,10 +100,11 @@ public class NeighborDetection {
                 .collect(Collectors.toList());
     }
 
-    private static Double getDistance(Particle p1, Particle p2, boolean contorn, int size){
+    private static Double getDistance(Particle p1, Particle p2, boolean contorn, double size){
         double y = Math.abs(p2.getY() - p1.getY());
         double x = Math.abs(p2.getX() - p1.getX());
         double h = Math.hypot(y, x);
+        h = h - p1.getRadius() - p2.getRadius();
         if (contorn){
             double xc = Math.abs(p1.getX() - p2.getX());
             xc = Math.min(xc, size - xc);

@@ -23,16 +23,16 @@ public class Input {
     private final double minD = 0.15;   
     private final double maxD = 0.25;   
     private final boolean contornConditions = true; //Defined; Only on after the opening
-    private final double minRadio = 0.02;
-    private final double maxRadio = 0.03;
+    private final double minRadio = 0.01;
+    private final double maxRadio = 0.015;
     private final double Kn = Math.pow(10, 5);
     private final double Kt = 2d*Kn;
     private final double y = 70d;
     private final double mass = 0.01;
     private double endTime = 5.0;
-
-    private Grid grid;
-    private HashSet<Pair<Integer, Integer>> usedCells;
+    private double dt;
+    private int cellSideQuantity;
+    private double interactionRadio = 0.0;
 
     private double totalTries = 1E6;    //TODO: Not too much?
     private double tries = 0;
@@ -44,30 +44,40 @@ public class Input {
     /**
      * Empty constructor generates random inputs based in the max and min setted for each variable.
      */
-    public Input(Long quantity, double dt){
+    public Input(Long quantity){
         System.out.print("[Generating Input... ");
+        dt = 0.1*Math.sqrt(mass/Kn);
         this.particles = new ArrayList<>();
-//        this.grid = new Grid(10d, L); TODO INITIALIZE GRID!!! Need to be rectangular?
+        ThreadLocalRandom random = ThreadLocalRandom.current();
+        // size of the silo
+        L = random.nextDouble(minL,maxL);
+        W = random.nextDouble(minW,maxW);
+        D = random.nextDouble(minD,maxD);
+        this.cellSideQuantity = (int) Math.ceil(L/(maxRadio * 3 ));
+
+        System.out.println("L:" + L + "; W:" + W + "; D:" + D);
+
 
         //Maximum particle quantity
-        while(particles.size() < particlesQuantity && tries < totalTries) {
+        while(particles.size() < quantity && tries < totalTries) {
             Particle potential = new Particle(
-                    Math.random()*(this.minRadio - this.maxRadio) + this.minRadio,
-                    this.mass,
-                    Math.random()*this.W, Math.random()*this.L + 1,
-                    0,0 //TODO: Initial Velocity and Acceleration?
+                    random.nextDouble(minRadio,maxRadio),
+                    mass,
+                    random.nextDouble(0 + maxRadio,W - maxRadio),
+                    random.nextDouble(0 + maxRadio,L - maxRadio),
+                    0.0,
+                    0.0,
+                    dt
             );
-            if (noOverlapParticle(potential.getX(), potential.getY())){
+            if (noOverlapParticle(potential.getX(), potential.getY())) {
                 particles.add(potential);
-            }else{
-                tries++;
             }
+            tries++;
         }
-        grid.setParticles(particles);
         System.out.println("Done.]");
     }
 
-    private boolean noOverlapParticle(Double x, Double y){
+    public boolean noOverlapParticle(Double x, Double y){
         if (particles.size() == 0) return true;
         for (Particle particle : particles){
                 if ( (Math.pow(particle.getX() - x, 2) + Math.pow(particle.getY() - y, 2)) <= Math.pow(particle.getRadius()*2, 2)){
@@ -113,15 +123,19 @@ public class Input {
         return D;
     }
 
-    public Grid getGrid() {
-        return grid;
-    }
-
-    public HashSet<Pair<Integer, Integer>> getUsedCells() {
-        return usedCells;
-    }
-
     public static double getGravity() {
         return gravity;
+    }
+
+    public double getDt() {
+        return dt;
+    }
+
+    public int getCellSideQuantity() {
+        return cellSideQuantity;
+    }
+
+    public double getInteractionRadio() {
+        return interactionRadio;
     }
 }

@@ -8,8 +8,8 @@ import java.util.List;
 
 public class VelocityVerlet extends Integrator {
 
-    public VelocityVerlet(Double dt, ForceFunction forceFunction, Double W, Double L) {
-        super(dt, forceFunction, W, L);
+    public VelocityVerlet(Double dt, ForceFunction forceFunction, Double W, Double L, Double D) {
+        super(dt, forceFunction, W, L, D);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class VelocityVerlet extends Integrator {
             Particle predictedParticle = new Particle(particle.getRadius(), particle.getMass(), x,y, particle.getvX(),particle.getvY());
 
             //TODO: CHECK IF REALLY NEED TO RECALCULATE WALLS!?
-            walls = Simulation.getWallsCollisions(predictedParticle, W, L);
+            walls = Simulation.getWallsCollisions(predictedParticle, W, L, D);
 
             Vector2D predictedForce = forceFunction.getForce(predictedParticle, neighbours, walls);
 

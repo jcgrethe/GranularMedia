@@ -38,7 +38,7 @@ public class GranularMediaForce  implements ForceFunction {
             relativeVelocity = getRelativeVelocity(particle, neighbour, tan);
 
             Vector2D forceNormalAndTan = getNormalAndTangencialVector(overlapSize, relativeVelocity);
-            force.add(
+            force = force.add(
                     forceNormalAndTan.getX() * xDistanceFraction + forceNormalAndTan.getY() * -yDistanceFraction,
                     forceNormalAndTan.getX() * yDistanceFraction + forceNormalAndTan.getY() * xDistanceFraction
             );
@@ -55,9 +55,9 @@ public class GranularMediaForce  implements ForceFunction {
         }
 
         // Force from gravity
-        force.add(
+        force = force.add(
                 0d,
-                -Input.getGravity() / particle.getMass()
+                -Input.getGravity()
         );
 
         return force;
@@ -111,25 +111,25 @@ public class GranularMediaForce  implements ForceFunction {
     private void addForceFromWall(Vector2D force, Wall wall, Vector2D normalAndTan){
         switch (wall.getTypeOfWall()){
             case TOP: // normal [0,1] ; tan [1,0]
-                force.add(
+                force = force.add(
                         normalAndTan.getY(),    // Only tan
                         normalAndTan.getX()     // Only normal
                 );
                 break;
             case RIGHT: // normal [-1,0] ; tan [0,1]
-                force.add(
+                force = force.add(
                     -normalAndTan.getX(),
                     normalAndTan.getY()
                 );
                 break;
             case BOTTOM: // normal [0,-1] ; tan [-1,0]
-                force.add(
+                force = force.add(
                     -normalAndTan.getY(),
                     -normalAndTan.getX()
                 );
                 break;
             case LEFT: // normal [1,0] ; tan [0,-1]
-                force.add(
+                force = force.add(
                     normalAndTan.getX(),
                     -normalAndTan.getY()
                 );

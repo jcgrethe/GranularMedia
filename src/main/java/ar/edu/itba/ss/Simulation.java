@@ -4,53 +4,66 @@ import ar.edu.itba.ss.GranularMedia.GranularMediaForce;
 import ar.edu.itba.ss.Integrators.GearPredictor;
 import ar.edu.itba.ss.Integrators.Integrator;
 import ar.edu.itba.ss.Integrators.NeighborDetection;
+import ar.edu.itba.ss.Integrators.VelocityVerlet;
 import ar.edu.itba.ss.io.Input;
 import ar.edu.itba.ss.io.Output;
+import ar.edu.itba.ss.models.Grid;
 import ar.edu.itba.ss.models.Particle;
 import ar.edu.itba.ss.models.Wall;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Simulation
 {
+
+    static long PARTICLES = 100;
+
+
+
     public static void main( String[] args )
     {
+
+        simulation1();
+        // Output
+    }
+
+    public static void simulation1(){
         // Initial conditions
-        Input input = new Input();
-        Double simulationDT = 0.1*Math.sqrt(input.getMass()/input.getKn());   //Default ; TODO: Check if there is a better one
+        //Double simulationDT = 0.1*Math.sqrt(input.getMass()/input.getKn());   //Default ; TODO: Check if there is a better one
+        Input input = new Input(PARTICLES);
+        double simulationDT = input.getDt();
         Double printDT = simulationDT / 2d;
-        Integrator integrator = new GearPredictor(simulationDT,
+        Integrator integrator = new VelocityVerlet(simulationDT,
                 new GranularMediaForce(input.getKn(), input.getKt(), input.getW(), input.getL()),
-                input.getW(), input.getL()
+                input.getW(), input.getL(), input.getD()
         );
         // Can use other integrator.
-        Map<Particle, List<Particle>> neighbours = new HashMap<>();
+        Map<Particle, List<Particle>> neighbours;
         List<Particle> particles = input.getParticles();
         Output.generateXYZFile();
 
         //Simulation
         for (double time = 0d ; time < input.getEndTime() ; time += simulationDT){
+            Grid grid = new Grid(input.getCellSideQuantity(),input.getL());
+            grid.setParticles(input.getParticles());
 //            integrator.moveParticle();
             neighbours = NeighborDetection.getNeighbours(
-                    input.getGrid(), input.getUsedCells(),
-                    0d, false
+                    grid, grid.getUsedCells(),
+                    input.getInteractionRadio(), false
             );
             for (Particle particle : particles){
                 integrator.moveParticle(
                         particle, simulationDT,
-                        neighbours.get(particle),
-                        getWallsCollisions(particle, input.getW(), input.getL())
+                        neighbours.getOrDefault(particle,new LinkedList<>()),
+                        getWallsCollisions(particle, input.getW(), input.getL(), input.getD())
                 );
             }
             for (Particle particle : particles){
                 particle.updateState();
-                if (particle.getY() > input.getL()){
+                if (particle.getY() < -input.getL()/10){
                     //Vertical Contorn Condition
-                    particle.setY(0d);  //TODO: Same velocity and X position?
+                    particle.reset(input);  //TODO: Same velocity and X position?
                 }
             }
             if (time % printDT == 0){
@@ -62,12 +75,11 @@ public class Simulation
                 }
             }
         }
-
-        // Output
     }
 
-    public static List<Wall> getWallsCollisions(Particle p, Double boxWidth, Double boxHeight){
-        List<Wall> walls = Collections.emptyList();
+
+    public static List<Wall> getWallsCollisions(Particle p, Double boxWidth, Double boxHeight, Double D){
+        List<Wall> walls = new LinkedList<>();
         if (p.getX() - p.getRadius() < 0)
             walls.add(new Wall(Wall.typeOfWall.LEFT));
         if (p.getX() + p.getRadius() < boxWidth)
@@ -75,7 +87,8 @@ public class Simulation
         if (p.getY() - p.getRadius() < 0)
             walls.add(new Wall(Wall.typeOfWall.TOP));
         if (p.getY() + p.getRadius() < boxHeight)
-            walls.add(new Wall(Wall.typeOfWall.BOTTOM));
+            if(p.getX() < boxWidth / 2 - D / 2  || p.getX() > boxWidth / 2 + D / 2 ) // apertura
+                walls.add(new Wall(Wall.typeOfWall.BOTTOM));
         return walls;
     }
 }

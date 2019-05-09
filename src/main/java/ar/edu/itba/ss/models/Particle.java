@@ -1,7 +1,10 @@
 package ar.edu.itba.ss.models;
 
+import ar.edu.itba.ss.io.Input;
+
 import java.awt.geom.Point2D;
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Particle {
     private static Long serial_id = Long.valueOf(0);
@@ -167,5 +170,16 @@ public class Particle {
 
     public double getDistance(Particle p){
         return this.getPosition().distance(p.getPosition()).getModule();
+    }
+
+    public void reset(Input input) {
+        double x;
+        double y;
+        do{
+            x = ThreadLocalRandom.current().nextDouble(0+this.radius,input.getW()-this.radius);
+            y = input.getL()+2*radius;
+        }while (!input.noOverlapParticle(x,y));
+        State newState = new State(x,y,0,0);
+        currentState = previousState = newState;
     }
 }

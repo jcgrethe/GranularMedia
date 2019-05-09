@@ -12,9 +12,9 @@ public class Grid {
     private Cell[][] cells;
     private HashSet<Pair<Integer, Integer>> usedCells;
     private int sideCellsQuantity;
-    private int sideLength;
+    private double sideLength;
 
-    public Grid(int sideCellsQuantity, int sideLength) {
+    public Grid(int sideCellsQuantity, double sideLength) {
         this.sideCellsQuantity = sideCellsQuantity;
         this.cells = new Cell[sideCellsQuantity][sideCellsQuantity];
         for (int i = 0 ; i < sideCellsQuantity ; i++)
@@ -40,7 +40,7 @@ public class Grid {
         return sideCellsQuantity;
     }
 
-    public int getSideLength() {
+    public double getSideLength() {
         return sideLength;
     }
 
@@ -51,10 +51,14 @@ public class Grid {
             int row = (int)Math.floor(particle.getY() / cellSideLength); // Cast truncates
             int column = (int)Math.floor(particle.getX() / cellSideLength); // Cast truncates
             try {
-                cells[row][column].addParticle(particle);
-                usedCells.add(new Pair(row, column));
+                if (row >= 0 && row <= sideCellsQuantity) {
+                    cells[row][column].addParticle(particle);
+                    usedCells.add(new Pair(row, column));
+                }
             } catch (Exception e){
                 System.out.println("Wrong dt.");
+                System.out.println(row + " " + column);
+                System.out.println(particle.getY() + " " + particle.getX());
                 System.exit(0);
             }
         }

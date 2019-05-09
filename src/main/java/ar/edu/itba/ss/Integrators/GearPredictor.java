@@ -15,8 +15,8 @@ public class GearPredictor extends Integrator {
     private Double correctFactor4;
     private Double correctFactor5;
 
-    public GearPredictor(Double dt, ForceFunction forceFunction, Double W, Double L) {
-        super(dt, forceFunction, W, L);
+    public GearPredictor(Double dt, ForceFunction forceFunction, Double W, Double L, Double D) {
+        super(dt, forceFunction, W, L, D);
         setFactors();
     }
 
@@ -58,7 +58,7 @@ public class GearPredictor extends Integrator {
             );
 
             //TODO: CHECK IF REALLY NEED TO RECALCULATE WALLS!?
-            walls = Simulation.getWallsCollisions(predictedParticle, W, L);
+            walls = Simulation.getWallsCollisions(predictedParticle, W, L, D);
 
             //Evaluate
             Vector2D force = forceFunction.getForce(predictedParticle, neighbours, walls);
