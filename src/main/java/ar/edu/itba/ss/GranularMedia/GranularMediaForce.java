@@ -47,15 +47,17 @@ public class GranularMediaForce  implements ForceFunction {
         // Force from walls
         for (Wall wall : walls){
             overlapSize = overlapSize(particle, wall);
-            relativeVelocity = getRelativeVelocity(particle, wall);
-            Vector2D forceNormalAndTan = getNormalAndTangencialVector(Math.abs(overlapSize), relativeVelocity);
-            force = addForceFromWall(force, wall, forceNormalAndTan);
+            if (Math.abs(overlapSize) <= particle.getRadius()){
+                relativeVelocity = getRelativeVelocity(particle, wall);
+                Vector2D forceNormalAndTan = getNormalAndTangencialVector(Math.abs(overlapSize), relativeVelocity);
+                force = addForceFromWall(force, wall, forceNormalAndTan);
+            }
         }
 
         // Force from gravity
         force = force.add(
                 0d,
-                -Input.getGravity()
+                -Input.getGravity()*particle.getMass()
         );
 
         return force;
@@ -78,9 +80,9 @@ public class GranularMediaForce  implements ForceFunction {
             case TOP:
                 return p.getRadius() - Math.abs(p.getY());
             case RIGHT:
-                return p.getRadius() - Math.abs(boxWidth - p.getX());
+                return p.getRadius() - boxWidth + p.getX();
             case BOTTOM:
-                return p.getRadius() - Math.abs(boxHeigth - p.getY());
+                return p.getRadius() - boxHeigth + p.getY();
             case LEFT:
                 return p.getRadius() - Math.abs(p.getX());
         }

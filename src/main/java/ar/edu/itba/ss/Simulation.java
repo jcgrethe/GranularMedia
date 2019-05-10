@@ -33,7 +33,7 @@ public class Simulation
         //Double simulationDT = 0.1*Math.sqrt(input.getMass()/input.getKn());   //Default ; TODO: Check if there is a better one
         Input input = new Input(PARTICLES);
         double simulationDT = input.getDt();
-        Double printDT = simulationDT / 2d;
+        Double printDT = simulationDT *10;
         Integrator integrator = new VelocityVerlet(simulationDT,
                 new GranularMediaForce(input.getKn(), input.getKt(), input.getW(), input.getL()),
                 input.getW(), input.getL(), input.getD()
@@ -66,7 +66,7 @@ public class Simulation
                     particle.reset(input);  //TODO: Same velocity and X position?
                 }
             }
-            if (time % printDT == 0){
+            if (time % printDT >= simulationDT){ //TODO CHECK!!
                 //Print
                 try {
                     Output.printToFile(particles);
@@ -80,13 +80,13 @@ public class Simulation
 
     public static List<Wall> getWallsCollisions(Particle p, Double boxWidth, Double boxHeight, Double D){
         List<Wall> walls = new LinkedList<>();
-        if (p.getX() - p.getRadius() < 0)
+        if (p.getX() < p.getRadius())
             walls.add(new Wall(Wall.typeOfWall.LEFT));
-        if (p.getX() + p.getRadius() < boxWidth)
+        if (boxWidth - p.getX() < p.getRadius())
             walls.add(new Wall(Wall.typeOfWall.RIGHT));
-        if (p.getY() - p.getRadius() < 0)
+        if (p.getY() < p.getRadius())
             walls.add(new Wall(Wall.typeOfWall.TOP));
-        if (p.getY() + p.getRadius() < boxHeight)
+        if (boxHeight - p.getY() < p.getRadius())
             if(p.getX() < boxWidth / 2 - D / 2  || p.getX() > boxWidth / 2 + D / 2 ) // apertura
                 walls.add(new Wall(Wall.typeOfWall.BOTTOM));
         return walls;

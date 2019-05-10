@@ -46,7 +46,7 @@ public class Input {
      */
     public Input(Long quantity){
         System.out.print("[Generating Input... ");
-        dt = 0.1*Math.sqrt(mass/Kn)*100;
+        dt = 0.1*Math.sqrt(mass/Kn);
         this.particles = new ArrayList<>();
         ThreadLocalRandom random = ThreadLocalRandom.current();
         // size of the silo
