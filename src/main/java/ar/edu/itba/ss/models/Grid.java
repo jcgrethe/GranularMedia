@@ -11,14 +11,18 @@ import static javafx.application.Platform.exit;
 public class Grid {
     private Cell[][] cells;
     private HashSet<Pair<Integer, Integer>> usedCells;
-    private int sideCellsQuantity;
+    private int HsideCellsQuantity;
+    private int VsideCellsQuantity;
+    private double sideCellLength;
     private double sideLength;
 
-    public Grid(int sideCellsQuantity, double sideLength) {
-        this.sideCellsQuantity = sideCellsQuantity;
-        this.cells = new Cell[sideCellsQuantity][sideCellsQuantity];
-        for (int i = 0 ; i < sideCellsQuantity ; i++)
-            for (int j = 0 ; j < sideCellsQuantity ; j++)
+    public Grid(double sideCellLength, double W, double H) {
+        this.sideCellLength = sideCellLength;
+        this.HsideCellsQuantity = (int) Math.ceil(H / sideCellLength);
+        this.VsideCellsQuantity = (int) Math.ceil(H / sideCellLength);
+        this.cells = new Cell[VsideCellsQuantity][HsideCellsQuantity];
+        for (int i = 0 ; i < VsideCellsQuantity ; i++)
+            for (int j = 0 ; j < HsideCellsQuantity ; j++)
                 this.cells[i][j] = new Cell();
         this.sideLength = sideLength;
     }
@@ -28,7 +32,7 @@ public class Grid {
     }
 
     public Cell getSideCell(int x, int y){
-        return cells[Math.floorMod(x, sideCellsQuantity)][Math.floorMod(y, sideCellsQuantity)];
+        return cells[Math.floorMod(x, VsideCellsQuantity)][Math.floorMod(y, HsideCellsQuantity)];
         }
 
 
@@ -36,8 +40,11 @@ public class Grid {
         cells[x][y] = cell;
     }
 
-    public int getSideCellsQuantity() {
-        return sideCellsQuantity;
+    public int getHSideCellsQuantity() {
+        return HsideCellsQuantity;
+    }
+    public int getVSideCellsQuantity() {
+        return VsideCellsQuantity;
     }
 
     public double getSideLength() {
@@ -46,12 +53,12 @@ public class Grid {
 
     public void setParticles(List<Particle> particles){
         usedCells = new HashSet<>();
-        Double cellSideLength = Double.valueOf(sideLength) / Double.valueOf(sideCellsQuantity);
+        Double cellSideLength = this.sideCellLength;
         for (Particle particle : particles){
-            int row = (int)Math.floor(particle.getY() / cellSideLength); // Cast truncates
-            int column = (int)Math.floor(particle.getX() / cellSideLength); // Cast truncates
+            int row = (int)Math.floor(particle.getY() / VsideCellsQuantity); // Cast truncates
+            int column = (int)Math.floor(particle.getX() / HsideCellsQuantity); // Cast truncates
             try {
-                if (row >= 0 && row <= sideCellsQuantity) {
+                if (row >= 0 && row < VsideCellsQuantity) {
                     cells[row][column].addParticle(particle);
                     usedCells.add(new Pair(row, column));
                 }

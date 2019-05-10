@@ -31,7 +31,7 @@ public class Input {
     private final double mass = 0.01;
     private double endTime = 5.0;
     private double dt;
-    private int cellSideQuantity;
+    private double cellSideLength;
     private double interactionRadio = 0.0;
 
     private double totalTries = 1E6;    //TODO: Not too much?
@@ -53,7 +53,7 @@ public class Input {
         L = random.nextDouble(minL,maxL);
         W = random.nextDouble(minW,maxW);
         D = random.nextDouble(minD,maxD);
-        this.cellSideQuantity = (int) Math.ceil(L/(maxRadio * 3 ));
+        this.cellSideLength = Math.ceil(L/(maxRadio * 3 ));
 
         System.out.println("L:" + L + "; W:" + W + "; D:" + D);
 
@@ -131,8 +131,8 @@ public class Input {
         return dt;
     }
 
-    public int getCellSideQuantity() {
-        return cellSideQuantity;
+    public double getCellSideLength() {
+        return cellSideLength;
     }
 
     public double getInteractionRadio() {

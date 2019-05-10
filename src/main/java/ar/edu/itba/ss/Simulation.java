@@ -17,7 +17,7 @@ import java.util.*;
 public class Simulation
 {
 
-    static long PARTICLES = 100;
+    static long PARTICLES = 300;
 
 
 
@@ -33,7 +33,7 @@ public class Simulation
         //Double simulationDT = 0.1*Math.sqrt(input.getMass()/input.getKn());   //Default ; TODO: Check if there is a better one
         Input input = new Input(PARTICLES);
         double simulationDT = input.getDt();
-        Double printDT = simulationDT *10;
+        Double printDT = simulationDT *1000;
         Integrator integrator = new VelocityVerlet(simulationDT,
                 new GranularMediaForce(input.getKn(), input.getKt(), input.getW(), input.getL()),
                 input.getW(), input.getL(), input.getD()
@@ -45,7 +45,7 @@ public class Simulation
 
         //Simulation
         for (double time = 0d ; time < input.getEndTime() ; time += simulationDT){
-            Grid grid = new Grid(input.getCellSideQuantity(),input.getL());
+            Grid grid = new Grid(input.getCellSideLength(),input.getW(), input.getL());
             grid.setParticles(input.getParticles());
 //            integrator.moveParticle();
             neighbours = NeighborDetection.getNeighbours(
