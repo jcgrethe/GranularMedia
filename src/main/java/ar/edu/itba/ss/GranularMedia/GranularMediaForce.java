@@ -47,11 +47,9 @@ public class GranularMediaForce  implements ForceFunction {
         // Force from walls
         for (Wall wall : walls){
             overlapSize = overlapSize(particle, wall);
-            if (overlapSize > 0){
-                relativeVelocity = getRelativeVelocity(particle, wall);
-                Vector2D forceNormalAndTan = getNormalAndTangencialVector(overlapSize, relativeVelocity);
-                addForceFromWall(force, wall, forceNormalAndTan);
-            }
+            relativeVelocity = getRelativeVelocity(particle, wall);
+            Vector2D forceNormalAndTan = getNormalAndTangencialVector(Math.abs(overlapSize), relativeVelocity);
+            force = addForceFromWall(force, wall, forceNormalAndTan);
         }
 
         // Force from gravity
@@ -108,32 +106,29 @@ public class GranularMediaForce  implements ForceFunction {
         return 0d;  //Not should happen.
     }
 
-    private void addForceFromWall(Vector2D force, Wall wall, Vector2D normalAndTan){
+    private Vector2D addForceFromWall(Vector2D force, Wall wall, Vector2D normalAndTan){
         switch (wall.getTypeOfWall()){
             case TOP: // normal [0,1] ; tan [1,0]
-                force = force.add(
+                return force.add(
                         normalAndTan.getY(),    // Only tan
                         normalAndTan.getX()     // Only normal
                 );
-                break;
             case RIGHT: // normal [-1,0] ; tan [0,1]
-                force = force.add(
+                return force.add(
                     -normalAndTan.getX(),
                     normalAndTan.getY()
                 );
-                break;
             case BOTTOM: // normal [0,-1] ; tan [-1,0]
-                force = force.add(
+                return force.add(
                     -normalAndTan.getY(),
                     -normalAndTan.getX()
                 );
-                break;
             case LEFT: // normal [1,0] ; tan [0,-1]
-                force = force.add(
+                return force.add(
                     normalAndTan.getX(),
                     -normalAndTan.getY()
                 );
-                break;
         }
+        return force;
     }
 }
