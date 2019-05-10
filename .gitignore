@@ -2,6 +2,10 @@
 # Created by https://www.gitignore.io/api/java,text,linux,maven,windows,eclipse,intellij,intellij+all
 # Edit at https://www.gitignore.io/?templates=java,text,linux,maven,windows,eclipse,intellij,intellij+all
 
+#Program Files
+*.xyz
+*.csv
+
 ### Eclipse ###
 .metadata
 bin/
