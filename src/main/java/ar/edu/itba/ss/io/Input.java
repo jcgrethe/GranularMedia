@@ -46,7 +46,7 @@ public class Input {
      */
     public Input(Long quantity){
         System.out.print("[Generating Input... ");
-        dt = 0.1*Math.sqrt(mass/Kn);
+        dt = 0.1*Math.sqrt(mass/Kn)*100;
         this.particles = new ArrayList<>();
         ThreadLocalRandom random = ThreadLocalRandom.current();
         // size of the silo
@@ -69,7 +69,7 @@ public class Input {
                     0.0,
                     dt
             );
-            if (noOverlapParticle(potential.getX(), potential.getY())) {
+            if (noOverlapParticle(potential.getX(), potential.getY(), potential.getRadius())) {
                 particles.add(potential);
             }
             tries++;
@@ -77,10 +77,10 @@ public class Input {
         System.out.println("Done.]");
     }
 
-    public boolean noOverlapParticle(Double x, Double y){
+    public boolean noOverlapParticle(Double x, Double y, Double radio){
         if (particles.size() == 0) return true;
         for (Particle particle : particles){
-                if ( (Math.pow(particle.getX() - x, 2) + Math.pow(particle.getY() - y, 2)) <= Math.pow(particle.getRadius()*2, 2)){
+                if ( (Math.pow(particle.getX() - x, 2) + Math.pow(particle.getY() - y, 2)) <= Math.pow(particle.getRadius() + radio, 2)){
                     return false;
             }
         }

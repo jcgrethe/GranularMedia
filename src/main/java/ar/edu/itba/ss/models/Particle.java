@@ -178,7 +178,7 @@ public class Particle {
         do{
             x = ThreadLocalRandom.current().nextDouble(0+this.radius,input.getW()-this.radius);
             y = input.getL()+2*radius;
-        }while (!input.noOverlapParticle(x,y));
+        }while (!input.noOverlapParticle(x,y,radius));
         State newState = new State(x,y,0,0);
         currentState = previousState = newState;
     }
