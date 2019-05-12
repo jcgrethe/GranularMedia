@@ -46,6 +46,7 @@ public class Simulation
         //Simulation
         for (double time = 0d ; time < input.getEndTime() ; time += simulationDT){
             Grid grid = new Grid(input.getCellSideLength(),input.getW(), input.getL());
+            System.out.println(time);
             grid.setParticles(input.getParticles());
 //            integrator.moveParticle();
             neighbours = NeighborDetection.getNeighbours(
@@ -85,8 +86,6 @@ public class Simulation
         if (boxWidth - p.getX() < p.getRadius())
             walls.add(new Wall(Wall.typeOfWall.RIGHT));
         if (p.getY() < p.getRadius())
-            walls.add(new Wall(Wall.typeOfWall.TOP));
-        if (boxHeight - p.getY() < p.getRadius())
             if(p.getX() < boxWidth / 2 - D / 2  || p.getX() > boxWidth / 2 + D / 2 ) // apertura
                 walls.add(new Wall(Wall.typeOfWall.BOTTOM));
         return walls;

@@ -138,4 +138,8 @@ public class Input {
     public double getInteractionRadio() {
         return interactionRadio;
     }
+
+    public double getMaxRadio() {
+        return maxRadio;
+    }
 }
