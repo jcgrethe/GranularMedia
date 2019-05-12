@@ -36,15 +36,15 @@ public class NeighborDetection {
                         currentNeighbours.addAll(getNeighborParticles(current,
                                 grid.getCell(i - 1, j), interactionRadio, contornCondition, grid.getSideLength()));
 
-                    if (i != 0 && j != grid.getSideCellsQuantity() - 1)
+                    if (i != 0 && j != grid.getHSideCellsQuantity() - 1)
                         currentNeighbours.addAll(getNeighborParticles(current,
                                 grid.getCell(i - 1, j + 1), interactionRadio, contornCondition, grid.getSideLength()));
 
-                    if (j != grid.getSideCellsQuantity() - 1)
+                    if (j != grid.getHSideCellsQuantity() - 1)
                         currentNeighbours.addAll(getNeighborParticles(current,
                                 grid.getCell(i, j + 1), interactionRadio, contornCondition, grid.getSideLength()));
 
-                    if (j != grid.getSideCellsQuantity() - 1 && i != grid.getSideCellsQuantity() - 1)
+                    if (j != grid.getHSideCellsQuantity() - 1 && i != grid.getVSideCellsQuantity() - 1)
                         currentNeighbours.addAll(getNeighborParticles(current,
                                 grid.getCell(i + 1, j + 1), interactionRadio, contornCondition, grid.getSideLength()));
 
