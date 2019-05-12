@@ -53,7 +53,7 @@ public class Input {
         L = random.nextDouble(minL,maxL);
         W = random.nextDouble(minW,maxW);
         D = random.nextDouble(minD,maxD);
-        this.cellSideQuantity = (int) Math.ceil(L/(maxRadio * 3 ));
+        this.cellSideQuantity = (int) Math.ceil(L/maxRadio);
 
         System.out.println("L:" + L + "; W:" + W + "; D:" + D);
 
@@ -137,5 +137,9 @@ public class Input {
 
     public double getInteractionRadio() {
         return interactionRadio;
+    }
+
+    public double getMaxRadio() {
+        return maxRadio;
     }
 }

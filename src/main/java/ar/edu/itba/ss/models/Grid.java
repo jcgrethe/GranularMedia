@@ -51,7 +51,7 @@ public class Grid {
             int row = (int)Math.floor(particle.getY() / cellSideLength); // Cast truncates
             int column = (int)Math.floor(particle.getX() / cellSideLength); // Cast truncates
             try {
-                if (row >= 0 && row <= sideCellsQuantity) {
+                if (row >= 0 && row < sideCellsQuantity) {
                     cells[row][column].addParticle(particle);
                     usedCells.add(new Pair(row, column));
                 }
