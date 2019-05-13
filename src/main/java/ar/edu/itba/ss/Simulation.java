@@ -1,10 +1,7 @@
 package ar.edu.itba.ss;
 
 import ar.edu.itba.ss.GranularMedia.GranularMediaForce;
-import ar.edu.itba.ss.Integrators.GearPredictor;
-import ar.edu.itba.ss.Integrators.Integrator;
-import ar.edu.itba.ss.Integrators.NeighborDetection;
-import ar.edu.itba.ss.Integrators.VelocityVerlet;
+import ar.edu.itba.ss.Integrators.*;
 import ar.edu.itba.ss.io.Input;
 import ar.edu.itba.ss.io.Output;
 import ar.edu.itba.ss.models.Grid;
@@ -17,7 +14,7 @@ import java.util.*;
 public class Simulation
 {
 
-    static long PARTICLES = 300;
+    static long PARTICLES = Integer.MAX_VALUE;
 
 
 
@@ -32,9 +29,11 @@ public class Simulation
         // Initial conditions
         //Double simulationDT = 0.1*Math.sqrt(input.getMass()/input.getKn());   //Default ; TODO: Check if there is a better one
         Input input = new Input(PARTICLES);
-        double simulationDT = input.getDt();
-        Double printDT = simulationDT *1000;
-        Integrator integrator = new VelocityVerlet(simulationDT,
+        double simulationDT = 0.0001;
+        Integer printDT = 100;
+        Integer iteration = 0;
+        System.out.println("DT: "+input.getDt() + " | Print DT: " + printDT);
+        Integrator integrator = new GearPredictor(simulationDT,
                 new GranularMediaForce(input.getKn(), input.getKt(), input.getW(), input.getL()),
                 input.getW(), input.getL(), input.getD()
         );
@@ -44,9 +43,8 @@ public class Simulation
         Output.generateXYZFile();
 
         //Simulation
-        for (double time = 0d ; time < input.getEndTime() ; time += simulationDT){
+        for (double time = 0d ; time < input.getEndTime() ; time += simulationDT, iteration++){
             Grid grid = new Grid(input.getCellSideLength(),input.getW(), input.getL());
-            System.out.println(time);
             grid.setParticles(input.getParticles());
 //            integrator.moveParticle();
             neighbours = NeighborDetection.getNeighbours(
@@ -67,9 +65,10 @@ public class Simulation
                     particle.reset(input);  //TODO: Same velocity and X position?
                 }
             }
-            if (time % printDT >= simulationDT){ //TODO CHECK!!
+            if (iteration % printDT == 0){ //TODO CHECK!!
                 //Print
                 try {
+                    System.out.println(time);
                     Output.printToFile(particles);
                 }catch (IOException e){
                     System.out.println(e.getMessage());
