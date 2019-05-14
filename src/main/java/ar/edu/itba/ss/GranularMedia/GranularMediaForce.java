@@ -24,23 +24,30 @@ public class GranularMediaForce  implements ForceFunction {
 
     @Override
     public Vector2D getForce(Particle particle, List<Particle> neighbours, List<Wall> walls) {
-        Vector2D force = new Vector2D();
+        Vector2D force;
         double xDistanceFraction, yDistanceFraction, distance, overlapSize;
 
         // Force from particles
+        double forceX = 0;
+        double forceY = 0;
         for (Particle neighbour : neighbours){
             distance = neighbour.getDistance(particle);
             xDistanceFraction = (neighbour.getX() - particle.getX())/distance;
             yDistanceFraction = (neighbour.getY() - particle.getY())/distance;
 
-            Vector2D normalVector = new Vector2D(xDistanceFraction, yDistanceFraction); //TODO Check '-'
-            overlapSize = overlapSize(particle, neighbour);
+            Vector2D normalVector = new Vector2D(yDistanceFraction, -xDistanceFraction); //TODO Check '-'
+            overlapSize = overlapSize(particle, neighbour); //mirar esto
             if(overlapSize < 0) continue; // Not colliding
-            Vector2D relativeVelocity = getRelativeVelocity(particle, neighbour);
-
-            force = force.add(getElasticForce(overlapSize, normalVector));
-            force = force.add(getDampedForce(overlapSize, relativeVelocity, normalVector));
+            double relativeVelocity = getRelativeVelocity(particle, neighbour , normalVector);
+            double normalForceValue = - Kn * overlapSize;
+            double tangencialForceValue = - Kt * overlapSize * relativeVelocity;
+            forceX += normalForceValue * xDistanceFraction + tangencialForceValue * (-yDistanceFraction);
+            forceY += normalForceValue * yDistanceFraction + tangencialForceValue * xDistanceFraction;
+/*            if(Math.abs(forceX)>15 || Math.abs(forceY)>15)
+                System.out.println("error1");*/
         }
+        force = new Vector2D(forceX,forceY);
+
 
         // Force from walls
         for (Wall wall : walls){
@@ -52,6 +59,9 @@ public class GranularMediaForce  implements ForceFunction {
             }
         }
 
+/*        if(Math.abs(force.getX())>15 || Math.abs(force.getY())>15)
+            System.out.println("error2");*/
+
         // Force from gravity
         force = force.add(
                 0d,
@@ -60,6 +70,7 @@ public class GranularMediaForce  implements ForceFunction {
 
         return force;
     }
+
     private Vector2D getNormalAndTangencialVector(double overlapSize, double relativeVelocity){
         return new Vector2D(
                 -Kn * overlapSize,

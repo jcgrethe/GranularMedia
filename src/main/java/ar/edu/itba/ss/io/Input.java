@@ -25,7 +25,7 @@ public class Input {
     private final boolean contornConditions = true; //Defined; Only on after the opening
     private final double minRadio = 0.01;
     private final double maxRadio = 0.015;
-    private final double Kn = Math.pow(10, 5);
+    private final double Kn = 1E5;
     private final double Kt = 2d*Kn;
     private final double y = 70d;
     private final double mass = 0.01;
@@ -54,7 +54,7 @@ public class Input {
         L = random.nextDouble(minL,maxL);
         W = random.nextDouble(minW,maxW);
         D = random.nextDouble(minD,maxD);
-        this.cellSideLength = Math.ceil(L/(maxRadio * 3 ));
+        this.cellSideLength = Math.ceil(L/(maxRadio));
 
         System.out.println("L:" + L + "; W:" + W + "; D:" + D);
 
@@ -65,7 +65,7 @@ public class Input {
                     random.nextDouble(minRadio,maxRadio),
                     mass,
                     random.nextDouble(0 + maxRadio,W - maxRadio),
-                    random.nextDouble(0 + maxRadio,L/3- maxRadio), //TODO remove /3 just for testing
+                    random.nextDouble(0 + maxRadio,L- maxRadio), //TODO remove /3 just for testing
                     0.0,
                     0.0,
                     dt

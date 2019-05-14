@@ -30,7 +30,7 @@ public class Simulation
         //Double simulationDT = 0.1*Math.sqrt(input.getMass()/input.getKn());   //Default ; TODO: Check if there is a better one
         Input input = new Input(PARTICLES);
         double simulationDT = 0.00001;
-        Integer printDT = 10;
+        Integer printDT = 500;
         Integer iteration = 0;
         System.out.println("DT: "+input.getDt() + " | Print DT: " + printDT);
         Integrator integrator = new VelocityVerlet(simulationDT,
