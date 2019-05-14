@@ -1,7 +1,9 @@
 package ar.edu.itba.ss.models;
 
+import ar.edu.itba.ss.io.Output;
 import javafx.util.Pair;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -63,6 +65,11 @@ public class Grid {
                     usedCells.add(new Pair(row, column));
                 }
             } catch (Exception e){
+                try {
+                    Output.printToFile(particles);
+                }catch (IOException ex){
+                    System.out.println(ex.getMessage());
+                }
                 System.out.println("Wrong dt. Particle with id:" + particle.getId());
                 System.out.println(row + " " + column);
                 System.out.println(particle.getY() + " " + particle.getX());
