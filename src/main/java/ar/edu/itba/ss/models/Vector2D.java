@@ -32,6 +32,9 @@ public class Vector2D {
     public Vector2D multiply(Double magnitude){
         return new Vector2D(this.x * magnitude, this.y * magnitude);
     }
+    public double dotMultiply(Vector2D v){
+        return x*v.getY()-y*getX();
+    }
     public Vector2D divide(Double magnitude){
         return new Vector2D(this.x / magnitude, this.y / magnitude);
     }

@@ -25,7 +25,7 @@ public class GranularMediaForce  implements ForceFunction {
     @Override
     public Vector2D getForce(Particle particle, List<Particle> neighbours, List<Wall> walls) {
         Vector2D force = new Vector2D();
-        double xDistanceFraction, yDistanceFraction, distance, overlapSize, relativeVelocity;
+        double xDistanceFraction, yDistanceFraction, distance, overlapSize;
 
         // Force from particles
         for (Particle neighbour : neighbours){
@@ -33,22 +33,20 @@ public class GranularMediaForce  implements ForceFunction {
             xDistanceFraction = (neighbour.getX() - particle.getX())/distance;
             yDistanceFraction = (neighbour.getY() - particle.getY())/distance;
 
-            Vector2D tan = new Vector2D(-yDistanceFraction, xDistanceFraction); //TODO Check '-'
+            Vector2D normalVector = new Vector2D(xDistanceFraction, yDistanceFraction); //TODO Check '-'
             overlapSize = overlapSize(particle, neighbour);
-            relativeVelocity = getRelativeVelocity(particle, neighbour, tan);
+            if(overlapSize < 0) continue; // Not colliding
+            Vector2D relativeVelocity = getRelativeVelocity(particle, neighbour);
 
-            Vector2D forceNormalAndTan = getNormalAndTangencialVector(overlapSize, relativeVelocity);
-            force = force.add(
-                    forceNormalAndTan.getX() * xDistanceFraction + forceNormalAndTan.getY() * (-yDistanceFraction),
-                    forceNormalAndTan.getX() * yDistanceFraction + forceNormalAndTan.getY() * xDistanceFraction
-            );
+            force = force.add(getElasticForce(overlapSize, normalVector));
+            force = force.add(getDampedForce(overlapSize, relativeVelocity, normalVector));
         }
 
         // Force from walls
         for (Wall wall : walls){
             overlapSize = overlapSize(particle, wall);
             if (overlapSize > 0){
-                relativeVelocity = getRelativeVelocity(particle, wall);
+                double relativeVelocity = getRelativeVelocity(particle, wall);
                 Vector2D forceNormalAndTan = getNormalAndTangencialVector(overlapSize, relativeVelocity);
                 force = addForceFromWall(force, wall, forceNormalAndTan);
             }
@@ -62,12 +60,18 @@ public class GranularMediaForce  implements ForceFunction {
 
         return force;
     }
-
     private Vector2D getNormalAndTangencialVector(double overlapSize, double relativeVelocity){
         return new Vector2D(
                 -Kn * overlapSize,
                 -Kt * overlapSize * relativeVelocity
         );
+    }
+
+    private Vector2D getElasticForce(double overlapSize, Vector2D normalVector){
+        return normalVector.multiply(-Kn).multiply(overlapSize);
+    }
+    private Vector2D getDampedForce(double overlapSize, Vector2D relativeVelocity, Vector2D normalVector){
+        return normalVector.multiply(-Kt).multiply(overlapSize).multiply(relativeVelocity.dotMultiply(normalVector));
     }
 
     private static double overlapSize(Particle one, Particle another) {
@@ -94,16 +98,20 @@ public class GranularMediaForce  implements ForceFunction {
         return v.getX() * tan.getX() + v.getY() * tan.getY();
     }
 
+    private static Vector2D getRelativeVelocity(Particle one, Particle another) {
+        return another.getVelocity().subtract(one.getVelocity());
+    }
+
     private static double getRelativeVelocity(Particle p, Wall wall) {
         switch (wall.getTypeOfWall()){
             case TOP: // --->
                 return p.getVelocity().getX();
             case RIGHT: // v
-                return p.getVelocity().getY();
+                return -p.getVelocity().getY();
             case BOTTOM: // <---
                 return -p.getVelocity().getX();
             case LEFT: // ^
-                return -p.getVelocity().getY();
+                return p.getVelocity().getY();
         }
         return 0d;  //Not should happen.
     }
@@ -115,20 +123,20 @@ public class GranularMediaForce  implements ForceFunction {
                         normalAndTan.getY(),    // Only tan
                         normalAndTan.getX()     // Only normal
                 );
-            case RIGHT: // normal [-1,0] ; tan [0,1]
+            case RIGHT: // normal [1,0] ; tan [0,-1]
                 return force.add(
-                    -normalAndTan.getX(),
-                    normalAndTan.getY()
+                    normalAndTan.getX(),
+                    -normalAndTan.getY()
                 );
             case BOTTOM: // normal [0,-1] ; tan [-1,0]
                 return force.add(
                     -normalAndTan.getY(),
                     -normalAndTan.getX()
                 );
-            case LEFT: // normal [1,0] ; tan [0,-1]
+            case LEFT: // normal [-1,0] ; tan [0,1]
                 return force.add(
-                    normalAndTan.getX(),
-                    -normalAndTan.getY()
+                    -normalAndTan.getX(),
+                    normalAndTan.getY()
                 );
         }
         return force;

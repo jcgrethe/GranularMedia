@@ -63,7 +63,7 @@ public class Grid {
                     usedCells.add(new Pair(row, column));
                 }
             } catch (Exception e){
-                System.out.println("Wrong dt.");
+                System.out.println("Wrong dt. Particle with id:" + particle.getId());
                 System.out.println(row + " " + column);
                 System.out.println(particle.getY() + " " + particle.getX());
                 System.exit(0);

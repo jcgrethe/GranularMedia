@@ -65,7 +65,7 @@ public class Input {
                     random.nextDouble(minRadio,maxRadio),
                     mass,
                     random.nextDouble(0 + maxRadio,W - maxRadio),
-                    random.nextDouble(0 + maxRadio,L - maxRadio),
+                    random.nextDouble(0 + maxRadio,L/3- maxRadio), //TODO remove /3 just for testing
                     0.0,
                     0.0,
                     dt

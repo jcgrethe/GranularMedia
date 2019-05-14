@@ -176,8 +176,8 @@ public class Particle {
         double x;
         double y;
         do{
-            x = ThreadLocalRandom.current().nextDouble(0+this.radius,input.getW()-this.radius);
-            y = ThreadLocalRandom.current().nextDouble( input.getL()+3*input.getMaxRadio(),input.getL()+6*input.getMaxRadio());
+            x = ThreadLocalRandom.current().nextDouble(input.getMaxRadio(),input.getW()-input.getMaxRadio());
+            y = ThreadLocalRandom.current().nextDouble( input.getL()/3 + input.getMaxRadio(),input.getL()- input.getMaxRadio());
         }while (!input.noOverlapParticle(x,y,radius));  //NO NEED TO CHECK WALLS?
         State newState = new State(x,y,0,0);
         currentState = previousState = newState;
