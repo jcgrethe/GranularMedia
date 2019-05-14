@@ -54,13 +54,13 @@ public class Input {
         L = random.nextDouble(minL,maxL);
         W = random.nextDouble(minW,maxW);
         D = random.nextDouble(minD,maxD);
-        this.cellSideLength = Math.ceil(L/(maxRadio));
+        this.cellSideLength = maxRadio * 2;
 
         System.out.println("L:" + L + "; W:" + W + "; D:" + D);
 
 
         //Maximum particle quantity
-        while(particles.size() < quantity && tries < totalTries) {
+        while(tries < totalTries) {
             Particle potential = new Particle(
                     random.nextDouble(minRadio,maxRadio),
                     mass,

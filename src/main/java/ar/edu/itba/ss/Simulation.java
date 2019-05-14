@@ -85,7 +85,7 @@ public class Simulation
             walls.add(new Wall(Wall.typeOfWall.LEFT));
         if (boxWidth - p.getX() < p.getRadius())
             walls.add(new Wall(Wall.typeOfWall.RIGHT));
-        if (p.getY() < p.getRadius())
+        if (p.getY() < p.getRadius() && p.getY()>0)
             if(p.getX() < boxWidth / 2 - D / 2  || p.getX() > boxWidth / 2 + D / 2 ) // apertura
                 walls.add(new Wall(Wall.typeOfWall.BOTTOM));
         return walls;
