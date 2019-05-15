@@ -20,4 +20,8 @@ public class Cell {
     public List<Particle> getParticles() {
         return particles;
     }
+
+    public void removeAll() {
+        particles.clear();
+    }
 }

@@ -43,8 +43,8 @@ public class Simulation
         Output.generateXYZFile();
 
         //Simulation
+        Grid grid = new Grid(input.getCellSideLength(),input.getW(), input.getL());
         for (double time = 0d ; time < input.getEndTime() ; time += simulationDT, iteration++){
-            Grid grid = new Grid(input.getCellSideLength(),input.getW(), input.getL());
             grid.setParticles(input.getParticles());
 //            integrator.moveParticle();
             neighbours.clear();
@@ -75,6 +75,7 @@ public class Simulation
                     System.out.println(e.getMessage());
                 }
             }
+            grid.clean();
         }
     }
 
