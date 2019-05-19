@@ -25,11 +25,11 @@ public class Input {
     private final boolean contornConditions = true; //Defined; Only on after the opening
     private final double minRadio = 0.01;
     private final double maxRadio = 0.015;
-    private final double Kn = 1E5;
-    private final double Kt = 2d*Kn;
+    private double Kn= 1E5;
+    private double Kt;
     private final double y = 70d;
     private final double mass = 0.01;
-    private double endTime = 5.0;
+    private double endTime = 10.0;
     private double dt;
     private double cellSideLength;
     private double interactionRadio = 0.0;
@@ -44,20 +44,21 @@ public class Input {
     /**
      * Empty constructor generates random inputs based in the max and min setted for each variable.
      */
-    public Input(Long quantity, double dt){
-        System.out.print("[Generating Input... ");
+    public Input(Long quantity, double dt, double d, double kt, double Kn){
+        System.out.println("[Generating Input... ");
 //        dt = 0.1*Math.sqrt(mass/Kn);
+        this.D = d;
+        this.Kt = kt;
         this.dt = dt;
+        this.Kn = Kn;
         this.particles = new ArrayList<>();
         ThreadLocalRandom random = ThreadLocalRandom.current();
         // size of the silo
         L = random.nextDouble(minL,maxL);
         W = random.nextDouble(minW,maxW);
-        D = 0.15;
         this.cellSideLength = maxRadio * 2;
 
-        System.out.println("L:" + L + "; W:" + W + "; D:" + D);
-
+        System.out.println("L:" + L + "; W:" + W + "; D:" + D + " ; Kt:" + kt + " ; Kn:" + this.Kn);
 
         //Maximum particle quantity
         while(tries < totalTries) {
@@ -75,7 +76,7 @@ public class Input {
             }
             tries++;
         }
-        System.out.println(particles.size());
+        System.out.println("Particles: " + particles.size());
         System.out.println("Done.]");
     }
 
