@@ -20,7 +20,7 @@ public class Output {
     private static BufferedWriter energyBufferedWriter;
     private static BufferedWriter leftbuffer;
     private static BufferedWriter velocityBufferedWriter;
-
+    private static BufferedWriter caudalBufferedWriter;
 
     public static void printOscillationsResults(double[][] analitycPositions,
                                                 double[][] beemanPositions,
@@ -144,9 +144,21 @@ public class Output {
             energyBufferedWriter.write("time,energyk");
             energyBufferedWriter.newLine();
             energyBufferedWriter.flush();
+
+            FileWriter fw2 = new FileWriter("caudal.csv");
+            caudalBufferedWriter = new BufferedWriter(fw2);
+            caudalBufferedWriter.write("caudal,time");
+            caudalBufferedWriter.newLine();
+            caudalBufferedWriter.flush();
         }catch(IOException e){
             System.out.println(e);
         }
+    }
+
+    public static void printCaudal(int caudal,double time) throws IOException {
+        caudalBufferedWriter.write(caudal+","+time);
+        caudalBufferedWriter.newLine();
+        caudalBufferedWriter.flush();
     }
 
 

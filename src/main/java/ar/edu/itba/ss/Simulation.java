@@ -15,7 +15,7 @@ public class Simulation
 {
 
     static long PARTICLES = 150;
-
+    static int caudal = 0;
 
 
     public static void main( String[] args ) {
@@ -57,13 +57,22 @@ public class Simulation
                         getWallsCollisions(particle, input.getW(), input.getL(), input.getD())
                 );
             });
+
+            final double auxtime=time;
+
             particles.stream().parallel().forEach(particle -> {
                 particle.updateState();
                 if (particle.getY() < -input.getL()/10){
                     //Vertical Contorn Condition
+                    try {
+                        updateCaudal(input,auxtime);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     particle.reset(input);  //TODO: Same velocity and X position?
                 }
             });
+
             if (iteration % printDT == 0){ //TODO CHECK!!
                 //Print
                 try {
@@ -76,6 +85,11 @@ public class Simulation
             }
             grid.clean();
         }
+    }
+
+    private static void updateCaudal(Input input, double time) throws IOException {
+        caudal++;
+        Output.printCaudal(caudal,time);
     }
 
 

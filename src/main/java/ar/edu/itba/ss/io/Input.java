@@ -21,7 +21,7 @@ public class Input {
     private final double minW = 0.3;   
     private final double maxW = 0.4;   
     private final double minD = 0.15;   
-    private final double maxD = 0.25;   
+    private final double maxD = 0.25;
     private final boolean contornConditions = true; //Defined; Only on after the opening
     private final double minRadio = 0.01;
     private final double maxRadio = 0.015;
@@ -53,7 +53,7 @@ public class Input {
         // size of the silo
         L = random.nextDouble(minL,maxL);
         W = random.nextDouble(minW,maxW);
-        D = random.nextDouble(minD,maxD);
+        D = 0.15;
         this.cellSideLength = maxRadio * 2;
 
         System.out.println("L:" + L + "; W:" + W + "; D:" + D);
