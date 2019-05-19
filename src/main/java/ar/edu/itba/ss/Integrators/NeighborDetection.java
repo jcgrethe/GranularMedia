@@ -21,7 +21,7 @@ public class NeighborDetection {
     public static Map<Particle, List<Particle>> getNeighbours(Grid grid, HashSet<Pair<Integer, Integer>> usedCells, Double interactionRadio, Boolean contornCondition){
         Map<Particle, List<Particle>> result = new HashMap<>();
         // Foreach cell with particles
-        usedCells.forEach(pair -> {
+        usedCells.parallelStream().parallel().forEach(pair -> {
             int i = pair.getKey(), j = pair.getValue();
             for (Particle current : grid.getCell(i, j).getParticles()){
                 List<Particle> currentNeighbours = new ArrayList<>();

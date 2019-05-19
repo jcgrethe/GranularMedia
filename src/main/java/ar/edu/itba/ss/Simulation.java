@@ -18,18 +18,18 @@ public class Simulation
 
 
 
-    public static void main( String[] args )
-    {
-
+    public static void main( String[] args ) {
+        Output.generateVelocityStatistics();
         simulation1();
         // Output
+
     }
 
     public static void simulation1(){
         // Initial conditions
         //Double simulationDT = 0.1*Math.sqrt(input.getMass()/input.getKn());   //Default ; TODO: Check if there is a better one
-        Input input = new Input(PARTICLES);
-        double simulationDT = 0.00001;
+        double simulationDT = 5E-5;
+        Input input = new Input(PARTICLES, simulationDT);
         Integer printDT = 500;
         Integer iteration = 0;
         System.out.println("DT: "+input.getDt() + " | Print DT: " + printDT);
@@ -38,7 +38,6 @@ public class Simulation
                 input.getW(), input.getL(), input.getD()
         );
         // Can use other integrator.
-        Map<Particle, List<Particle>> neighbours = new HashMap<>();
         List<Particle> particles = input.getParticles();
         Output.generateXYZFile();
 
@@ -47,11 +46,10 @@ public class Simulation
         for (double time = 0d ; time < input.getEndTime() ; time += simulationDT, iteration++){
             grid.setParticles(input.getParticles());
 //            integrator.moveParticle();
-            neighbours.clear();
-            neighbours.putAll(NeighborDetection.getNeighbours(
+            Map<Particle, List<Particle>> neighbours = NeighborDetection.getNeighbours(
                     grid, grid.getUsedCells(),
                     input.getInteractionRadio(), false
-            ));
+            );
             particles.stream().parallel().forEach( particle -> {
                 integrator.moveParticle(
                         particle, simulationDT,
@@ -71,6 +69,7 @@ public class Simulation
                 try {
                     System.out.println(time);
                     Output.printToFile(particles);
+                    Output.printEnergy(input.getParticles(),time);
                 }catch (IOException e){
                     System.out.println(e.getMessage());
                 }

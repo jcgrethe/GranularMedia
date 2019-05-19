@@ -141,7 +141,7 @@ public class Output {
 
             FileWriter fw = new FileWriter(STATISTICS_FILENAME);
             energyBufferedWriter = new BufferedWriter(fw);
-            energyBufferedWriter.write("time,energyk,p,total,error");
+            energyBufferedWriter.write("time,energyk");
             energyBufferedWriter.newLine();
             energyBufferedWriter.flush();
         }catch(IOException e){
@@ -150,13 +150,12 @@ public class Output {
     }
 
 
-    public static void printEnergy(Map<Particle,List<Particle>> particles, Input input,double time) throws IOException {
-        double kineticE = 0.0, potencialE = 0.0;
-        for (Map.Entry<Particle,List<Particle>> entry : particles.entrySet()) {
+    public static void printEnergy(List<Particle> particles,double time) throws IOException {
+        double kineticE = 0.0;
+        for(Particle particle: particles)
+            kineticE+= kinetic(particle);
 
-        }
-        double error = energyError(5000, kineticE+potencialE);
-        energyBufferedWriter.write(time+","+kineticE+","+potencialE+","+(kineticE+potencialE)+","+ error);
+        energyBufferedWriter.write(time+","+kineticE);
         energyBufferedWriter.newLine();
         energyBufferedWriter.flush();
     }

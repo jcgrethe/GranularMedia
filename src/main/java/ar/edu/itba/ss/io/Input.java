@@ -44,10 +44,10 @@ public class Input {
     /**
      * Empty constructor generates random inputs based in the max and min setted for each variable.
      */
-    public Input(Long quantity){
+    public Input(Long quantity, double dt){
         System.out.print("[Generating Input... ");
 //        dt = 0.1*Math.sqrt(mass/Kn);
-        dt = 0.00001;
+        this.dt = dt;
         this.particles = new ArrayList<>();
         ThreadLocalRandom random = ThreadLocalRandom.current();
         // size of the silo
@@ -75,6 +75,7 @@ public class Input {
             }
             tries++;
         }
+        System.out.println(particles.size());
         System.out.println("Done.]");
     }
 
