@@ -81,7 +81,8 @@ public class GearPredictor extends Integrator {
               correctedGPState.getR1().getX(),
               correctedGPState.getR1().getY(),
               correctedGPState.getR2().getX(),
-              correctedGPState.getR2().getY()
+              correctedGPState.getR2().getY(),
+                    particle.getPressure()
             );
 
             // Finally, update the new state

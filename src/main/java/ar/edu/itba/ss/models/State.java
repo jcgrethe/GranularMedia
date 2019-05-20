@@ -61,7 +61,7 @@ public class State {
         this.gpState = Optional.empty();
     }
 
-    public State(double x, double y, double vX, double vY, double aX, double aY) {
+    public State(double x, double y, double vX, double vY, double aX, double aY, double pressure) {
         this.x = x;
         this.y = y;
         this.vX = vX;
@@ -73,6 +73,7 @@ public class State {
         this.aModule = Math.hypot(aX, aY);
         this.aAngle = Math.atan(aY/aX);
         this.gpState = Optional.empty();
+        this.pressure = pressure;
     }
 
     public State(){
@@ -155,5 +156,8 @@ public class State {
 
     public double getPressure() {
         return pressure;
+    }
+    public void setPressure(double pressure) {
+        this.pressure = pressure;
     }
 }

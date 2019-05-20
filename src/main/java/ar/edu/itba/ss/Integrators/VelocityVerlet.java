@@ -21,7 +21,7 @@ public class VelocityVerlet extends Integrator {
             particle.setFutureState(new State(
                     predictedPosition.getX(), predictedPosition.getY(),
                     predictedVelocity.getX(), predictedVelocity.getY(),
-                    0d,0d
+                    0d,0d, particle.getPressure()
             ));
     }
 }

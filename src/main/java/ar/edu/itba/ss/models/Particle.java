@@ -38,7 +38,7 @@ public class Particle {
         this.id = serial_id++;
         this.radius = radius;
         this.mass = mass;
-        this.previousState =  new State(0, 0, 0, 0, 0, 0);
+        this.previousState =  new State(0, 0, 0, 0, 0, 0,0);
         this.currentState = currentState;
         this.futureState = null;
     }
@@ -48,8 +48,8 @@ public class Particle {
      */
     public Particle(long id,double x, double y) {
         this.id = id;
-        currentState = new State(x, y, 0, 0, 0, 0);
-        previousState = new State(0, 0, 0, 0, 0, 0);
+        currentState = new State(x, y, 0, 0, 0, 0, 0);
+        previousState = new State(0, 0, 0, 0, 0, 0, 0);
         this.radius = 0;
         this.mass = Double.POSITIVE_INFINITY;
     }
@@ -58,18 +58,18 @@ public class Particle {
         this.id = serial_id++;
         this.radius = radius;
         this.mass = mass;
-        currentState = new State(x, y, vx, vy, 0, 0);
+        currentState = new State(x, y, vx, vy, 0, 0, 0);
         double prevX = x - vx * dt;
         double prevY = y - vy * dt;
-        previousState = new State(prevX, prevY, vx, vy, 0, 0);
+        previousState = new State(prevX, prevY, vx, vy, 0, 0, 0);
     }
 
     public Particle(double radius, double mass, double x, double y, double vx, double vy){
         this.id = serial_id++;
         this.radius = radius;
         this.mass = mass;
-        currentState = new State(x, y, vx, vy, 0, 0);
-        previousState = new State(0, 0, 0, 0, 0, 0);
+        currentState = new State(x, y, vx, vy, 0, 0, 0);
+        previousState = new State(0, 0, 0, 0, 0, 0, 0);
     }
 
     @Override
@@ -123,6 +123,12 @@ public class Particle {
 
     public Double getY(){
         return currentState.getY();
+    }
+    public Double getPressure(){
+        return currentState.getPressure();
+    }
+    public void setPressure(double pressure){
+        currentState.setPressure(pressure);
     }
 
     public Double getvX(){

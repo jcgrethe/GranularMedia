@@ -120,9 +120,8 @@ public class Output {
                                 + " " + particle.getvY()
                                 + " " + particle.getRadius()
                                 + " " + particle.getMass()
-                                + " " + particle.getaX()
-                                + " " + particle.getaY()
-                                + " " + particle.getCurrentState().getvModule());
+                                + " " + particle.getPressure()
+                );
                 simulationBufferedWriter.newLine();
             }catch (IOException e){
                 System.out.println(e);

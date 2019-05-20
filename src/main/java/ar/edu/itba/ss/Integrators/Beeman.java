@@ -49,7 +49,7 @@ public class Beeman extends Integrator {
         particle.setFutureState(new State(
                 position.getX(),position.getY(),
                 velocity.getX(), velocity.getY(),
-                predictedAcceleration.getX(), predictedAcceleration.getY()
+                predictedAcceleration.getX(), predictedAcceleration.getY(), particle.getPressure()
         ));
     }
 }

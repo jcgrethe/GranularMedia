@@ -30,6 +30,7 @@ public class GranularMediaForce  implements ForceFunction {
         // Force from particles
         double forceX = 0;
         double forceY = 0;
+        double pressure = 0;
         for (Particle neighbour : neighbours){
             distance = neighbour.getDistance(particle);
             xDistanceFraction = (neighbour.getX() - particle.getX())/distance;
@@ -43,9 +44,11 @@ public class GranularMediaForce  implements ForceFunction {
             double tangencialForceValue = - Kt * overlapSize * relativeVelocity;
             forceX += normalForceValue * xDistanceFraction + tangencialForceValue * (-yDistanceFraction);
             forceY += normalForceValue * yDistanceFraction + tangencialForceValue * xDistanceFraction;
-/*            if(Math.abs(forceX)>15 || Math.abs(forceY)>15)
+            pressure += normalForceValue;
+            /*            if(Math.abs(forceX)>15 || Math.abs(forceY)>15)
                 System.out.println("error1");*/
         }
+        particle.setPressure(Math.abs(pressure)/(2*Math.PI*particle.getRadius()));
         force = new Vector2D(forceX,forceY);
 
 
