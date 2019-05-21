@@ -16,7 +16,7 @@ import org.apache.commons.cli.*;
 public class Simulation
 {
 
-    static long PARTICLES = 150;
+    static long PARTICLES = 700;
     static int caudal = 0;
     private static double Kn = 1E5;
     private static double Kt = 2d*Kn;
@@ -43,6 +43,11 @@ public class Simulation
 
         if(cmd.getOptionValue("kn") != null){
             Kn = Double.parseDouble(cmd.getOptionValue("kn"));
+        }
+
+
+        if(cmd.getOptionValue("n") != null){
+            PARTICLES = Long.parseLong(cmd.getOptionValue("n"));
         }
 
 
@@ -139,6 +144,11 @@ public class Simulation
         Option other = new Option("kn", "kn", true, "kn");
         other.setRequired(false);
         options.addOption(other);
+
+        Option p = new Option("n", "n", true, "n");
+        p.setRequired(false);
+        options.addOption(p);
+
 
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();

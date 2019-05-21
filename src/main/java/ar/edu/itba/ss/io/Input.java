@@ -61,7 +61,7 @@ public class Input {
         System.out.println("L:" + L + "; W:" + W + "; D:" + D + " ; Kt:" + kt + " ; Kn:" + this.Kn);
 
         //Maximum particle quantity
-        while(tries < totalTries) {
+        while(tries < totalTries && particles.size() < quantity ) {
             Particle potential = new Particle(
                     random.nextDouble(minRadio,maxRadio),
                     mass,
