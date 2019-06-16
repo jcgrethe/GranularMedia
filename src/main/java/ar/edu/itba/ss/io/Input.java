@@ -54,14 +54,14 @@ public class Input {
         this.particles = new ArrayList<>();
         ThreadLocalRandom random = ThreadLocalRandom.current();
         // size of the silo
-        L = random.nextDouble(minL,maxL);
-        W = random.nextDouble(minW,maxW);
+        L = 1.25;
+        W = 0.35;
         this.cellSideLength = maxRadio * 2;
 
         System.out.println("L:" + L + "; W:" + W + "; D:" + D + " ; Kt:" + kt + " ; Kn:" + this.Kn);
 
         //Maximum particle quantity
-        while(tries < totalTries && particles.size() < quantity ) {
+        while(particles.size() < quantity ) {
             Particle potential = new Particle(
                     random.nextDouble(minRadio,maxRadio),
                     mass,
